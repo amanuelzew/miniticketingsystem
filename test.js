@@ -4,7 +4,7 @@ const BASE_URL="http://localhost:8000/api"
 async function testApi() {
   try {
     const login = await axios.post(`${BASE_URL}/login`)
-    const register = await axios.post(`${BASE_URL}/signup`)
+    const register = (await axios.post(`${BASE_URL}/signup`,{name:"john",email:"john@john.com",password:"jhon"}))
     const logout = await axios.post(`${BASE_URL}/logout`)
     const getProfile = await axios.get(`${BASE_URL}/profile`)
     const updateProfile = await axios.put(`${BASE_URL}/profile`)
