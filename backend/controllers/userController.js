@@ -1,10 +1,19 @@
 import expressAsyncHandler from "express-async-handler"
 import User from "../models/userModel.js"
+import generateToken from "../utils/generateToken.js"
 
 // POST/login
 //public
-const authUser=expressAsyncHandler (async(req,res)=>{
-   res.status(200).json({message:"login users"})
+const loginUser=expressAsyncHandler (async(req,res)=>{
+   const {email,password}=req.body
+   const user=await User.findOne({email})
+   if(user && (await user.matchPassword(password))){
+      generateToken(res,user._id)
+      res.status(201).json({_id:user._id,name:user.name,email:user.email,isAdmin:user.isAdmin})
+   }else{
+      res.status(400)
+      throw new Error("Invalid email or password")
+   }
 })
 
 // POST/signup
@@ -18,6 +27,7 @@ const registerUser=expressAsyncHandler (async(req,res)=>{
    }
    const user=await User.create({name,email,password,isAdmin})
    if(user){
+      generateToken(res,user._id)
       res.status(201).json({_id:user._id,name:user.name,email:user.email,isAdmin:user.isAdmin})
    }else{
       res.status(400)
@@ -28,7 +38,11 @@ const registerUser=expressAsyncHandler (async(req,res)=>{
 // POST/logout
 //logout user it is public
 const logoutUser=expressAsyncHandler (async(req,res)=>{
-   res.status(200).json({message:"logout users"})
+   res.cookie("jwt","",{
+      httpOnly:true,
+      expires:new Date(0)
+   })
+   res.status(200).json({message:"user logged out"})
 })
 
 // GET/users/profile
@@ -43,4 +57,4 @@ const getUserProfile=expressAsyncHandler (async(req,res)=>{
 const updateUserProfile=expressAsyncHandler (async(req,res)=>{
    res.status(200).json({message:"update user profile"})
 })
-export {authUser,registerUser,logoutUser,getUserProfile,updateUserProfile}
+export {loginUser,registerUser,logoutUser,getUserProfile,updateUserProfile}
