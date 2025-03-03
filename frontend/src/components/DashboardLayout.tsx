@@ -1,15 +1,24 @@
 
-
-import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router"
+import { BASE_URL } from "../utils/constants"
+import { useDispatch } from "react-redux"
+import { logout } from "../store"
+import { useState } from "react"
 
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
 interface DashboardLayoutProps {
   children: React.ReactNode
-  user: any
+  user: User
 }
 
 export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const location = useLocation()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -17,12 +26,19 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
     return null
   }
 
-  const isAdmin = user.role === "admin"
+  const isAdmin = user.isAdmin === true
   const dashboardPath = isAdmin ? "/dashboard/admin" : "/dashboard/user"
 
-  const handleLogout = () => {
-    localStorage.removeItem("user")
-    navigate("/login")
+  const handleLogout = async () => {
+    navigate("/")
+    dispatch(logout());
+    const res = await fetch(`${BASE_URL}/api/logout`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
   }
 
   const navigation = [
@@ -99,9 +115,8 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 transform bg-white border-r transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-30 w-64 transform bg-white border-r transition-transform duration-300 ease-in-out lg:translate-x-0 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-center h-16 border-b">
@@ -113,9 +128,8 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${
-                    item.current ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-100"
-                  }`}
+                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${item.current ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-100"
+                    }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <item.icon />
@@ -162,8 +176,11 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col lg:pl-64">
-        <header className="bg-white shadow-sm h-16 flex items-center px-4">
-          <h1 className="pl-20 text-lg font-semibold">{isAdmin ? "Admin Dashboard" : "User Dashboard"}</h1>
+        <header className="bg-white shadow-sm h-16 flex items-center justify-between px-4">
+          <Link className="flex items-center justify-center pl-10" to="/">
+            <span className="font-bold text-lg">TicketDesk</span>
+          </Link>
+          <h1 className="text-lg font-semibold">{isAdmin ? "Admin Dashboard" : "User Dashboard"}</h1>
         </header>
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>

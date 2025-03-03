@@ -1,18 +1,21 @@
 import { Navigate } from "react-router"
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
+
 
 interface AdminRouteProps {
   children: React.ReactNode
 }
 
 export function AdminRoute({ children }: AdminRouteProps) {
-  const userData = localStorage.getItem("user")
+  const user = useSelector((state: RootState) => state.user.user);
 
-  if (!userData) {
+  if (!user) {
     return <Navigate to="/login" replace />
   }
 
-  const user = JSON.parse(userData)
-  if (user.role !== "admin") {
+  
+  if (user.isAdmin == true) {
     return <Navigate to="/dashboard/user" replace />
   }
 

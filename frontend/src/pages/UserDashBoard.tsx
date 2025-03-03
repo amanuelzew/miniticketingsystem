@@ -6,30 +6,23 @@ import { DashboardLayout } from "../components/DashboardLayout"
 import { TicketList } from "../components/TicketList"
 import { CreateTicketDialog } from "../components/CreateTicketDialog"
 import type { Ticket } from "../../lib/types"
+import { RootState } from "../store"
+import { useSelector } from "react-redux"
 
 export default function UserDashboard() {
   const navigate = useNavigate()
-  const [user, setUser] = useState<any>(null)
+  const user = useSelector((state: RootState) => state.user.user);
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check if user is logged in
-    const userData = localStorage.getItem("user")
-    if (!userData) {
-      navigate("/login")
-      return
-    }
-
-    const parsedUser = JSON.parse(userData)
-    setUser(parsedUser)
-
+   
     // Get tickets from localStorage or initialize empty array
     const storedTickets = localStorage.getItem("tickets")
     if (storedTickets) {
       const parsedTickets = JSON.parse(storedTickets)
       // Filter tickets for current user
-      setTickets(parsedTickets.filter((ticket: Ticket) => ticket.userEmail === parsedUser.email))
+      //setTickets(parsedTickets.filter((ticket: Ticket) => ticket.userEmail === parsedUser.email))
     }
 
     setLoading(false)
@@ -55,7 +48,7 @@ export default function UserDashboard() {
   }
 
   return (
-    <DashboardLayout user={user}>
+    <DashboardLayout user={user!}>
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">My Tickets</h1>

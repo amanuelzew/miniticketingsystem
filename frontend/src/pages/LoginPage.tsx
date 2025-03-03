@@ -1,36 +1,70 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Link, useNavigate } from "react-router"
+import { BASE_URL } from "../utils/constants"
+import { useDispatch, useSelector } from "react-redux"
+import { login, RootState } from "../store"
+
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
+  useEffect(()=>{
+    if (user) {
+      if(user.isAdmin==true)
+      navigate("/dashboard/admin")
+      else
+      navigate("/dashboard/user")
+    }
+  },[]) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-
-    // Simulate login
-    setTimeout(() => {
-      // Check if admin
-      if (email === "admin@admin.com" && password === "admin") {
-        localStorage.setItem("user", JSON.stringify({ email, role: "admin", name: "Admin User" }))
-        navigate("/dashboard/admin")
-      } else {
-        localStorage.setItem("user", JSON.stringify({ email, role: "user", name: "Regular User" }))
-        navigate("/dashboard/user")
+    try{
+      const res=await fetch(`${BASE_URL}/api/login`,{
+        method:"POST",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({email,password})
+      })
+      if (!res.ok) {
+        setLoading(false)
+        setPassword("")
+        setError("Invalid email or password")
+        return
       }
-      setLoading(false)
-    }, 1000)
+      setError("")
+      const data=await res.json()
+      dispatch(login({ _id: data._id, name: data.name, email: data.email, isAdmin: data.isAdmin }));
+      if(data.isAdmin==true)
+      navigate("/dashboard/admin")
+      else
+      navigate("/dashboard/user")
+    }catch(err){
+      console.error()
+    }
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="bg-gray-50 min-h-screen">
+      <header className="px-4 lg:px-6 h-14 flex items-center">
+        <Link className="flex items-center justify-center" to="/">
+          <span className="font-bold text-lg">TicketDesk</span>
+        </Link>
+       
+      </header>
+    <div className="flex items-center justify-center pt-20">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-6 space-y-6">
           <div className="space-y-2 text-center">
@@ -87,9 +121,11 @@ export default function LoginPage() {
               </Link>
             </div>
           </form>
+          <p className="text-red-500">{error}</p>
         </div>
       </div>
     </div>
+  </div>
   )
 }
 

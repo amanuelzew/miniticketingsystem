@@ -2,30 +2,73 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router"
+import { BASE_URL } from "../utils/constants"
+import { RootState, signup } from "../store"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function SignupPage() {
   const navigate = useNavigate()
+  const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error,setError]=useState("")
+  const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  useEffect(()=>{
+    if (user) {
+      if(user.isAdmin==true)
+      navigate("/dashboard/admin")
+      else
+      navigate("/dashboard/user")
+    }
+  },[]) 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
-    // Simulate signup
-    setTimeout(() => {
-      localStorage.setItem("user", JSON.stringify({ email, role: "user", name }))
+    try{
+      const res=await fetch(`${BASE_URL}/api/signup`,{
+        method:"POST",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({name,email,password,isAdmin})
+      })
+      if (!res.ok) {
+        setLoading(false)
+        setName("")
+        setEmail("")
+        setPassword("")
+        setError("Email already exists")
+        return
+      }
+      setError("")
+      const data=await res.json()
+      dispatch(signup({ _id: data._id, name: data.name, email: data.email, isAdmin: data.isAdmin }));
+      console.log(data.isAdmin)
+      if(data.isAdmin==true)
+      navigate("/dashboard/admin")
+      else
       navigate("/dashboard/user")
-      setLoading(false)
-    }, 1000)
+    }catch(err){
+      console.error()
+    }
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="bg-gray-50 min-h-screen">
+      <header className="px-4 lg:px-6 h-14 flex items-center">
+        <Link className="flex items-center justify-center" to="/">
+          <span className="font-bold text-lg">TicketDesk</span>
+        </Link>
+      </header>
+    <div className="flex items-center justify-center p-10">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-6 space-y-6">
           <div className="space-y-2 text-center">
@@ -33,7 +76,7 @@ export default function SignupPage() {
             <p className="text-sm text-gray-500">Enter your information to create an account</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">
                 Full Name
@@ -77,6 +120,19 @@ export default function SignupPage() {
               />
             </div>
 
+            <div className="flex gap-3">
+              <label htmlFor="admin" className="text-sm font-medium">
+                ADMIN
+              </label>
+              <input
+                id="admin"
+                type="checkbox"
+                onChange={(e) => setIsAdmin(e.target.checked)}
+                required
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
             <button
               type="submit"
               disabled={loading}
@@ -96,8 +152,10 @@ export default function SignupPage() {
               </Link>
             </div>
           </form>
+          <p className="text-red-500">{error}</p>
         </div>
       </div>
+    </div>
     </div>
   )
 }

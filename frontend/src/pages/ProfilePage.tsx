@@ -5,47 +5,52 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { DashboardLayout } from "../components/DashboardLayout"
+import { RootState, setUser } from "../store"
+import { useDispatch, useSelector } from "react-redux"
+import { BASE_URL } from "../utils/constants"
 
 export default function ProfilePage() {
   const navigate = useNavigate()
-  const [user, setUser] = useState<any>(null)
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
+  const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
+  const [name, setName] = useState(user!.name)
+  const [email, setEmail] = useState(user!.email)
   const [loading, setLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
-    // Check if user is logged in
-    const userData = localStorage.getItem("user")
-    if (!userData) {
-      navigate("/login")
-      return
-    }
-
-    const parsedUser = JSON.parse(userData)
-    setUser(parsedUser)
-    setName(parsedUser.name || "")
-    setEmail(parsedUser.email || "")
-
     setLoading(false)
   }, [navigate])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSaving(true)
-
-    // Update user data
-    const updatedUser = { ...user, name, email }
-
-    // Save to localStorage
-    localStorage.setItem("user", JSON.stringify(updatedUser))
-
-    // Simulate API call
-    setTimeout(() => {
-      setUser(updatedUser)
+    try {
+      const res = await fetch(`${BASE_URL}/api/profile`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name })
+      })
+      if (!res.ok) {
+        setLoading(false)
+        return
+      }
+      // Update user data
       setIsSaving(false)
-      alert("Profile updated successfully!")
-    }, 1000)
+      const updatedUser = { ...user, name, email }
+      const data = await res.json()
+      dispatch(setUser({ _id: data._id, name: updatedUser.name, email: updatedUser.email, isAdmin: data.isAdmin }));
+      if (data.isAdmin == true)
+        navigate("/dashboard/admin")
+      else
+        navigate("/dashboard/user")
+    } catch (err) {
+      console.error()
+    }
+
   }
 
   if (loading) {
@@ -53,7 +58,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <DashboardLayout user={user}>
+    <DashboardLayout user={user!}>
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <div className="p-6 space-y-2">
@@ -90,29 +95,17 @@ export default function ProfilePage() {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="role" className="text-sm font-medium">
-                  Role
-                </label>
-                <input
-                  id="role"
-                  value={user.role}
-                  disabled
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50 cursor-not-allowed"
-                />
-                <p className="text-sm text-gray-500">Your role cannot be changed</p>
-              </div>
+
             </div>
 
             <div className="p-6 border-t border-gray-100">
               <button
                 type="submit"
                 disabled={isSaving}
-                className={`py-2 px-4 rounded-md text-white font-medium ${
-                  isSaving
+                className={`py-2 px-4 rounded-md text-white font-medium ${isSaving
                     ? "bg-blue-400 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                }`}
+                  }`}
               >
                 {isSaving ? "Saving..." : "Save changes"}
               </button>
@@ -123,4 +116,6 @@ export default function ProfilePage() {
     </DashboardLayout>
   )
 }
+
+
 

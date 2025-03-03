@@ -5,28 +5,22 @@ import { useNavigate } from "react-router"
 import { DashboardLayout } from "../components/DashboardLayout"
 import { TicketList } from "../components/TicketList"
 import type { Ticket } from "../../lib/types"
+import { COOKIE_NAME } from "../utils/constants"
+import { RootState } from "../store"
+import { useSelector } from "react-redux"
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
-  const [user, setUser] = useState<any>(null)
+  const user = useSelector((state: RootState) => state.user.user);
   const [tickets, setTickets] = useState<Ticket[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check if user is logged in and is admin
-    const userData = localStorage.getItem("user")
-    if (!userData) {
-      navigate("/login")
-      return
-    }
-
-    const parsedUser = JSON.parse(userData)
-    if (parsedUser.role !== "admin") {
+    
+    if (user!.isAdmin ==false) {
       navigate("/dashboard/user")
       return
     }
-
-    setUser(parsedUser)
 
     // Get tickets from localStorage or initialize empty array
     const storedTickets = localStorage.getItem("tickets")
@@ -53,7 +47,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <DashboardLayout user={user}>
+    <DashboardLayout user={user!}>
       <div className="flex flex-col gap-6">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
 
