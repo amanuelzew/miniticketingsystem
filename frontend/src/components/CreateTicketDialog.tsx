@@ -43,7 +43,7 @@ export function CreateTicketDialog({ user}: CreateTicketDialogProps) {
       }
      
       const data=await res.json()
-      dispatch(addTicket({ _id: data._id, title: data.title, description: data.description, status: data.status,user:data.user }));
+      dispatch(addTicket({ _id: data._id, title: data.title, description: data.description,createdBy:data.createdBy, status: data.status,user:data.user }));
       const resTicket=await fetch(`${BASE_URL}/api/usertickets`,{
         method:"GET",
         credentials:"include",

@@ -39,7 +39,7 @@ const createTicket = async (req, res) => {
         return res.status(404).json({ error: 'User not found' });
       }
   
-      const ticket = new TicketModel({ title, description, status: Status.OPEN, user: user._id });
+      const ticket = new TicketModel({ title, description, status: Status.OPEN,createdBy:req.user.name, user: user._id });
       await ticket.save();
   
       user.tickets.push(ticket._id);
@@ -54,11 +54,11 @@ const createTicket = async (req, res) => {
 // PUT/ticket
 //private and only accessible by admin
 const editTicketStatus = async (req, res) => {
-    const { ticketId } = req.params;
+    const { id } = req.params;
     const { status } = req.body;
     try {
         const ticket = await TicketModel.findByIdAndUpdate(
-            ticketId,
+            id,
             { status },
             { new: true }
         );

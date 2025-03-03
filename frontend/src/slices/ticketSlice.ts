@@ -7,6 +7,7 @@ export interface Ticket {
   title: string;
   description: string;
   status: string;
+  createdBy:string;
   user: string
 }
 
@@ -26,7 +27,7 @@ const ticketSlice = createSlice({
   initialState,
   reducers: {
     setTickets: (state, action: PayloadAction<Ticket[]>) => {
-      console.log(action.payload,"me")
+      
       state.tickets = action.payload;
     },
     addTicket: (state, action: PayloadAction<Ticket>) => {

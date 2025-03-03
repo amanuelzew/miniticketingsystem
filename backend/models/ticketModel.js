@@ -17,6 +17,7 @@ const ticketSchema=mongoose.Schema({
         unique:true
     },
     status: { type: String, enum: Object.values(Status), required: true },
+    createdBy:{  type:String,required:true},
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 },{
     timestamps:true

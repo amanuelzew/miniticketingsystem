@@ -47,24 +47,37 @@ export default function LoginPage() {
         setError("Invalid email or password")
         return
       }
-      const resTicket=await fetch(`${BASE_URL}/api/usertickets`,{
-        method:"GET",
-        credentials:"include",
-        headers:{
-          "Content-Type":"application/json",
-        },
-      })
-      
-      const dataTicket=await resTicket.json()
-      dispatch(setTickets( dataTicket));
       setError("")
       const data=await res.json()
-
+      
       dispatch(login({ _id: data._id, name: data.name, email: data.email, isAdmin: data.isAdmin,tickets:data.tickets }));
-      if(data.isAdmin==true)
-      navigate("/dashboard/admin")
-      else
-      navigate("/dashboard/user")
+      
+      if(data.isAdmin==true){
+        const resTicket=await fetch(`${BASE_URL}/api/tickets`,{
+          method:"GET",
+          credentials:"include",
+          headers:{
+            "Content-Type":"application/json",
+          },
+        })
+        
+        const dataTicket=await resTicket.json()
+        dispatch(setTickets( dataTicket));
+        navigate("/dashboard/admin")
+      }
+      else{
+        const resTicket=await fetch(`${BASE_URL}/api/usertickets`,{
+          method:"GET",
+          credentials:"include",
+          headers:{
+            "Content-Type":"application/json",
+          },
+        })
+        
+        const dataTicket=await resTicket.json()
+        dispatch(setTickets( dataTicket));
+        navigate("/dashboard/user")
+      }
     }catch(err){
       console.error()
     }

@@ -1,31 +1,50 @@
 import { useState } from "react"
-import { Ticket } from "../slices/ticketSlice"
+import {  Ticket, updateTicketStatus } from "../slices/ticketSlice"
+import { BASE_URL } from "../utils/constants"
+import { useDispatch } from "react-redux"
 
 
 interface TicketListProps {
   tickets: Ticket[]
   isAdmin: boolean
-  onStatusChange: (ticketId: string, status: string) => void
 }
 
-export function TicketList({ tickets, isAdmin, onStatusChange }: TicketListProps) {
+export function TicketList({ tickets, isAdmin }: TicketListProps) {
   const [filter, setFilter] = useState<string>("all")
+  const dispatch = useDispatch();
 
   const filteredTickets = filter === "all" ? tickets : tickets.filter((ticket) => ticket.status === filter)
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Open":
-        return "bg-red-100 text-red-800"
+      case "open":
+        return "bg-green-100 text-green-800"
       case "In Progress":
         return "bg-yellow-100 text-yellow-800"
       case "Closed":
-        return "bg-green-100 text-green-800"
+        return "bg-red-100 text-red-800"
       default:
         return "bg-gray-100 text-gray-800"
     }
   }
 
+  const onStatusChange=async (ticketId: string, status: string)=>{
+    try{
+      const res=await fetch(`${BASE_URL}/api/ticket/${ticketId}`,{
+        method:"PATCH",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({status})
+      })
+      if (!res.ok) 
+        return
+      dispatch(updateTicketStatus({ticketId:ticketId,status:status})); 
+    }catch(err){
+      console.error()
+    }
+  }
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
       <div className="flex flex-row items-center justify-between p-6 border-b border-gray-200">
@@ -93,7 +112,7 @@ export function TicketList({ tickets, isAdmin, onStatusChange }: TicketListProps
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate">
                       {ticket.description}
                     </td>
-                    {isAdmin&&<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ticket.title}</td>}
+                    {isAdmin&&<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ticket.createdBy}</td>}
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(ticket.status)}`}

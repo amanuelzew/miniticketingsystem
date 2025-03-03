@@ -1,50 +1,18 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
+
 import { DashboardLayout } from "../components/DashboardLayout"
 import { TicketList } from "../components/TicketList"
-import type { Ticket } from "../../lib/types"
-import { COOKIE_NAME } from "../utils/constants"
 import { RootState } from "../store"
 import { useSelector } from "react-redux"
+import { selectTickets } from "../slices/ticketSlice"
 
 export default function AdminDashboard() {
-  const navigate = useNavigate()
+ 
   const user = useSelector((state: RootState) => state.user.user);
-  const [tickets, setTickets] = useState<Ticket[]>([])
-  const [loading, setLoading] = useState(true)
+  const tickets = useSelector((state: RootState) => selectTickets(state));
 
-  useEffect(() => {
-    
-    if (user!.isAdmin ==false) {
-      navigate("/dashboard/user")
-      return
-    }
 
-    // Get tickets from localStorage or initialize empty array
-    const storedTickets = localStorage.getItem("tickets")
-    if (storedTickets) {
-      setTickets(JSON.parse(storedTickets))
-    }
-
-    setLoading(false)
-  }, [navigate])
-
-  const handleStatusChange = (ticketId: string, newStatus: string) => {
-    // Update ticket status
-    const updatedTickets = tickets.map((ticket) => (ticket.id === ticketId ? { ...ticket, status: newStatus } : ticket))
-
-    // Save to localStorage
-    localStorage.setItem("tickets", JSON.stringify(updatedTickets))
-
-    // Update state
-    setTickets(updatedTickets)
-  }
-
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
-  }
 
   return (
     <DashboardLayout user={user!}>
@@ -77,7 +45,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <TicketList tickets={tickets} isAdmin={true} onStatusChange={handleStatusChange} />
+        <TicketList tickets={tickets} isAdmin={true}  />
       </div>
     </DashboardLayout>
   )

@@ -13,7 +13,7 @@ export default function UserDashboard() {
   const user = useSelector((state: RootState) => state.user.user);
   const tickets = useSelector((state: RootState) => selectTickets(state));
   
-  console.log(tickets,"jj")
+
 
   return (
     <DashboardLayout user={user!}>
