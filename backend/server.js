@@ -4,6 +4,7 @@ import cors from "cors"
 dotenv.config()
 import { notFound,errorHandler } from "./middleware/errorMiddleware.js"
 import userRoutes from "./routes/userRoutes.js"
+import ticketRoutes from "./routes/ticketRoutes.js"
 import connectDB from "./config/db.js"
 import cookieParser from "cookie-parser"
 
@@ -30,6 +31,7 @@ app.use(cookieParser())
 
 
 app.use("/api/",userRoutes)
+app.use("/api/",ticketRoutes)
 
 app.get("/",(req,res)=>res.send("server is u and running"))
 
@@ -38,9 +40,3 @@ app.use(errorHandler)
 
 app.listen(PORT,()=>console.log(`Server running on port ${PORT}`))
 
-/* POST /signup → Register users (with role selection).
-POST /login → Authenticate users and return a JWT token.
-
-POST /tickets → Create a support ticket (title, description, status).
-GET /tickets:
-PUT /tickets/:id → Admins can update ticket status (e.g., Open, In Progress, Closed). */

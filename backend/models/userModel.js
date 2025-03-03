@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bycrypt from "bcryptjs"
+const { Schema, model } = mongoose;
 
 const userSchema=mongoose.Schema({
     name:{
@@ -14,13 +15,14 @@ const userSchema=mongoose.Schema({
     password:{
         type:String,
         required:true
-// Suggested code may be subject to a license. Learn more: ~LicenseLog:3931308880.
+
     },
     isAdmin:{
         type:Boolean,
         required:true,
         default:false
-    }
+    },
+    tickets: [{ type: Schema.Types.ObjectId, ref: 'Ticket' }] 
 },{
     timestamps:true
 })

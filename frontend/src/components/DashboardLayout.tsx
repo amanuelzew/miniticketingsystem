@@ -2,8 +2,9 @@
 import { Link, useLocation, useNavigate } from "react-router"
 import { BASE_URL } from "../utils/constants"
 import { useDispatch } from "react-redux"
-import { logout } from "../store"
+
 import { useState } from "react"
+import { logout } from "../slices/userSlice";
 
 interface User {
   _id: string;

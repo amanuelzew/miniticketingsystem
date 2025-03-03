@@ -1,5 +1,6 @@
 import { useState } from "react"
-import type { Ticket } from "../../lib/types"
+import { Ticket } from "../slices/ticketSlice"
+
 
 interface TicketListProps {
   tickets: Ticket[]
@@ -62,12 +63,13 @@ export function TicketList({ tickets, isAdmin, onStatusChange }: TicketListProps
                   >
                     Description
                   </th>
+                  {isAdmin&&
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Created By
-                  </th>
+                  </th>}
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -85,13 +87,13 @@ export function TicketList({ tickets, isAdmin, onStatusChange }: TicketListProps
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredTickets.map((ticket) => (
-                  <tr key={ticket.id}>
+                {filteredTickets.map((ticket, index) => (
+                  <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{ticket.title}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate">
                       {ticket.description}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ticket.userName}</td>
+                    {isAdmin&&<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ticket.title}</td>}
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(ticket.status)}`}
@@ -103,7 +105,7 @@ export function TicketList({ tickets, isAdmin, onStatusChange }: TicketListProps
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <select
                           value={ticket.status}
-                          onChange={(e) => onStatusChange(ticket.id, e.target.value)}
+                          onChange={(e) => onStatusChange(ticket._id, e.target.value)}
                           className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                         >
                           <option value="Open">Open</option>

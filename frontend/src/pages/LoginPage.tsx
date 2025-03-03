@@ -5,12 +5,15 @@ import { useState,useEffect } from "react"
 import { Link, useNavigate } from "react-router"
 import { BASE_URL } from "../utils/constants"
 import { useDispatch, useSelector } from "react-redux"
-import { login, RootState } from "../store"
+import { store, RootState } from "../store"
+import { login } from "../slices/userSlice"
+import { selectTickets, setTickets } from "../slices/ticketSlice"
 
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const user = useSelector((state: RootState) => state.user.user);
+  const allTickets = useSelector((state: RootState) => selectTickets(state));
   const dispatch = useDispatch();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -44,9 +47,20 @@ export default function LoginPage() {
         setError("Invalid email or password")
         return
       }
+      const resTicket=await fetch(`${BASE_URL}/api/usertickets`,{
+        method:"GET",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json",
+        },
+      })
+      
+      const dataTicket=await resTicket.json()
+      dispatch(setTickets( dataTicket));
       setError("")
       const data=await res.json()
-      dispatch(login({ _id: data._id, name: data.name, email: data.email, isAdmin: data.isAdmin }));
+
+      dispatch(login({ _id: data._id, name: data.name, email: data.email, isAdmin: data.isAdmin,tickets:data.tickets }));
       if(data.isAdmin==true)
       navigate("/dashboard/admin")
       else

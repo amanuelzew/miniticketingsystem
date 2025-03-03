@@ -5,9 +5,10 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { DashboardLayout } from "../components/DashboardLayout"
-import { RootState, setUser } from "../store"
+import { RootState } from "../store"
 import { useDispatch, useSelector } from "react-redux"
 import { BASE_URL } from "../utils/constants"
+import { setUser } from "../slices/userSlice"
 
 export default function ProfilePage() {
   const navigate = useNavigate()
@@ -42,7 +43,7 @@ export default function ProfilePage() {
       setIsSaving(false)
       const updatedUser = { ...user, name, email }
       const data = await res.json()
-      dispatch(setUser({ _id: data._id, name: updatedUser.name, email: updatedUser.email, isAdmin: data.isAdmin }));
+      dispatch(setUser({ _id: data._id, name: updatedUser.name, email: updatedUser.email, isAdmin: data.isAdmin ,tickets:data.tickets}));
       if (data.isAdmin == true)
         navigate("/dashboard/admin")
       else

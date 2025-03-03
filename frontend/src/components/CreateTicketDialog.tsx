@@ -2,43 +2,66 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import type { Ticket } from "../../lib/types"
+import { BASE_URL } from "../utils/constants"
+import { addTicket, setTickets } from "../slices/ticketSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router"
+import { User } from "../slices/userSlice"
+
 
 interface CreateTicketDialogProps {
-  user: any
-  onCreateTicket: (ticket: Ticket) => void
+  user: User
 }
 
-export function CreateTicketDialog({ user, onCreateTicket }: CreateTicketDialogProps) {
+export function CreateTicketDialog({ user}: CreateTicketDialogProps) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit =async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-
+  
     // Create new ticket
-    const newTicket: Ticket = {
-      id: Date.now().toString(),
-      title,
-      description,
-      status: "Open",
-      userEmail: user.email,
-      userName: user.name,
-      createdAt: new Date().toISOString(),
-    }
-
-    // Simulate API call
-    setTimeout(() => {
-      onCreateTicket(newTicket)
-      setIsSubmitting(false)
+    try{
+      const res=await fetch(`${BASE_URL}/api/ticket`,{
+        method:"POST",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({title,description,userId:user._id})
+      })
+      if (!res.ok) {
+        setIsSubmitting(true)
+        return
+      }
+     
+      const data=await res.json()
+      dispatch(addTicket({ _id: data._id, title: data.title, description: data.description, status: data.status,user:data.user }));
+      const resTicket=await fetch(`${BASE_URL}/api/usertickets`,{
+        method:"GET",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json",
+        },
+      })
+      
+      const dataTicket=await resTicket.json()
+      dispatch(setTickets( dataTicket));
+      
       setOpen(false)
-      setTitle("")
-      setDescription("")
-    }, 1000)
+      setIsSubmitting(false)
+      
+      navigate("/dashboard/user")
+    }catch(err){
+      console.error()
+    }
   }
 
   return (
@@ -82,7 +105,7 @@ export function CreateTicketDialog({ user, onCreateTicket }: CreateTicketDialogP
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder="Brief description of the issue"
-                            className="block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                           />
                         </div>
@@ -97,7 +120,7 @@ export function CreateTicketDialog({ user, onCreateTicket }: CreateTicketDialogP
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Detailed explanation of your issue"
                             rows={5}
-                            className="block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                           />
                         </div>
@@ -134,4 +157,6 @@ export function CreateTicketDialog({ user, onCreateTicket }: CreateTicketDialogP
     </div>
   )
 }
+
+
 

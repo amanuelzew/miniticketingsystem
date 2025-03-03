@@ -5,8 +5,10 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router"
 import { BASE_URL } from "../utils/constants"
-import { RootState, signup } from "../store"
+import { RootState } from "../store"
 import { useDispatch, useSelector } from "react-redux"
+import { signup } from "../slices/userSlice"
+import { setTickets } from "../slices/ticketSlice"
 
 export default function SignupPage() {
   const navigate = useNavigate()
@@ -50,8 +52,17 @@ export default function SignupPage() {
       }
       setError("")
       const data=await res.json()
-      dispatch(signup({ _id: data._id, name: data.name, email: data.email, isAdmin: data.isAdmin }));
-      console.log(data.isAdmin)
+      dispatch(signup({ _id: data._id, name: data.name, email: data.email, isAdmin: data.isAdmin,tickets:data.tickets }));
+      const resTicket=await fetch(`${BASE_URL}/api/usertickets`,{
+        method:"GET",
+        credentials:"include",
+        headers:{
+          "Content-Type":"application/json",
+        },
+      })
+      
+      const dataTicket=await resTicket.json()
+      dispatch(setTickets( dataTicket));
       if(data.isAdmin==true)
       navigate("/dashboard/admin")
       else
@@ -128,7 +139,6 @@ export default function SignupPage() {
                 id="admin"
                 type="checkbox"
                 onChange={(e) => setIsAdmin(e.target.checked)}
-                required
                 className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
