@@ -38,7 +38,7 @@ app.use(cookieParser())
 app.use("/api/",userRoutes)
 app.use("/api/",ticketRoutes)
 
-app.get("/",(req,res)=>res.send("server is u and running"))
+app.get("/",(req,res)=>res.send("server is up and running"))
 
 app.use(notFound)
 app.use(errorHandler)
