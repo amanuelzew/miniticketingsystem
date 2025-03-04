@@ -1,6 +1,3 @@
-"use client"
-
-import { useNavigate } from "react-router"
 import { DashboardLayout } from "../components/DashboardLayout"
 import { TicketList } from "../components/TicketList"
 import { CreateTicketDialog } from "../components/CreateTicketDialog"
@@ -9,12 +6,9 @@ import { useSelector } from "react-redux"
 import { selectTickets } from "../slices/ticketSlice"
 
 export default function UserDashboard() {
-  const navigate = useNavigate()
   const user = useSelector((state: RootState) => state.user.user);
   const tickets = useSelector((state: RootState) => selectTickets(state));
   
-
-
   return (
     <DashboardLayout user={user!}>
       <div className="flex flex-col gap-6">

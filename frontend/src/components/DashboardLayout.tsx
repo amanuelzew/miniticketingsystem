@@ -2,9 +2,12 @@
 import { Link, useLocation, useNavigate } from "react-router"
 import { BASE_URL } from "../utils/constants"
 import { useDispatch } from "react-redux"
-
 import { useState } from "react"
 import { logout } from "../slices/userSlice";
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface User {
   _id: string;
@@ -21,7 +24,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   if (!user) {
     return null
@@ -33,7 +36,7 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
   const handleLogout = async () => {
     navigate("/")
     dispatch(logout());
-    const res = await fetch(`${BASE_URL}/api/logout`, {
+    await fetch(`${BASE_URL}/api/logout`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -46,100 +49,72 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
     {
       name: "Dashboard",
       href: dashboardPath,
-      icon: () => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
-        </svg>
-      ),
-      current: location.pathname === dashboardPath,
+      icon: () => <MenuIcon />,
+      current: location.pathname.includes("/dashboard"),
     },
     {
       name: "Profile",
       href: "/profile",
-      icon: () => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
-      ),
+      icon: () => <AccountCircleIcon />,
       current: location.pathname === "/profile",
     },
   ]
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Mobile menu button */}
-      <div className="fixed top-0 left-0 z-40 lg:hidden">
+    <div className="bg-gray-50">
+      <div className="fixed top-0 left-0">
         <button
           className="m-2 p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={() => setIsOpen(!isOpen)}
         >
-          {isMobileMenuOpen ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+          {isOpen ? (
+            <CloseIcon />
           ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <MenuIcon />
           )}
         </button>
       </div>
 
+
       {/* Sidebar */}
-      <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 transform bg-white border-r transition-transform duration-300 ease-in-out lg:translate-x-0 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-      >
-        <div className="flex flex-col h-full">
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-2 bg-gray-500 text-white rounded absolute top-2 left-2"
+        >
+            <MenuIcon />
+        </button>
+
+        <div
+          className={`fixed inset-0 z-50 transition-transform transform ${isOpen ? 'translate-x-0' : '-translate-x-full'
+            } bg-gray-300  w-64 h-full`}
+        >
           <div className="flex items-center justify-center h-16 border-b">
-            <span className="text-xl font-bold">TicketDesk</span>
+            <Link to="/">
+              <span className="font-bold pl-5">TicketDesk</span>
+            </Link>
           </div>
-          <div className="flex-1 overflow-y-auto">
-            <nav className="px-2 py-4 space-y-1">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${item.current ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-100"
-                    }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <item.icon />
-                  <span className="ml-3">{item.name}</span>
-                </Link>
-              ))}
-            </nav>
-          </div>
-          <div className="p-4 border-t">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="p-2 bg-gray-500 text-white rounded absolute top-2 left-2"
+          >
+             <CloseIcon />
+          </button>
+          <nav className="px-2 py-4 space-y-1">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`flex items-center px-4 py-2 text-sm font-medium rounded-md ${item.current ? "bg-blue-600 text-white" : "text-black hover:bg-gray-100"
+                  }`}
+                onClick={() => setIsOpen(false)}
+              >
+                <item.icon />
+                <span className="ml-3">{item.name}</span>
+              </Link>
+            ))}
+          </nav>
+          <div className="p-4 mt-10 border-t">
             <div className="flex items-center mb-4">
               <div className="flex-shrink-0">
                 <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white">
@@ -148,27 +123,14 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium">{user.name}</p>
-                <p className="text-xs text-gray-500">{user.email}</p>
+                <p className="text-xs text-gray-700">{user.email}</p>
               </div>
             </div>
             <button
               className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               onClick={handleLogout}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
+              <LogoutIcon />
               Logout
             </button>
           </div>
@@ -176,11 +138,8 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col lg:pl-64">
-        <header className="bg-white shadow-sm h-16 flex items-center justify-between px-4">
-          <Link className="flex items-center justify-center pl-10" to="/">
-            <span className="font-bold text-lg">TicketDesk</span>
-          </Link>
+      <div className="flex-1 flex flex-col">
+        <header className="bg-white shadow-sm h-16 flex items-center justify-end px-4">
           <h1 className="text-lg font-semibold">{isAdmin ? "Admin Dashboard" : "User Dashboard"}</h1>
         </header>
         <main className="flex-1 overflow-y-auto p-6">{children}</main>

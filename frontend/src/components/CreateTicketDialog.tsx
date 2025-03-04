@@ -54,6 +54,8 @@ export function CreateTicketDialog({ user}: CreateTicketDialogProps) {
       
       setOpen(false)
       setIsSubmitting(false)
+      setTitle("")
+      setDescription("")
       
       navigate("/dashboard/user")
     }catch(err){

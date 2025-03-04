@@ -110,7 +110,7 @@ export function TicketList({ tickets, isAdmin }: TicketListProps) {
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{ticket.title}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 max-w-xs truncate">
-                      {ticket.description}
+                      {ticket.description.slice(0,15)+"..."}
                     </td>
                     {isAdmin&&<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ticket.createdBy}</td>}
                     <td className="px-6 py-4 whitespace-nowrap">
