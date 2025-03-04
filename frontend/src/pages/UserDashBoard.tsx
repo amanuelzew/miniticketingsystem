@@ -28,21 +28,21 @@ export default function UserDashboard() {
             <div className="pb-2">
               <h3 className="text-sm font-medium">Open Tickets</h3>
               <p className="text-xs text-gray-500">
-                {tickets.filter((ticket) => ticket.status === "open").length} tickets
+                {tickets.filter((ticket) => ticket.status === "Open").length} tickets
               </p>
             </div>
-            <div className="text-2xl font-bold">{tickets.filter((ticket) => ticket.status === "open").length}</div>
+            <div className="text-2xl font-bold">{tickets.filter((ticket) => ticket.status === "Open").length}</div>
           </div>
 
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="pb-2">
               <h3 className="text-sm font-medium">In Progress</h3>
               <p className="text-xs text-gray-500">
-                {tickets.filter((ticket) => ticket.status === "in_progress").length} tickets
+                {tickets.filter((ticket) => ticket.status === "In Progress").length} tickets
               </p>
             </div>
             <div className="text-2xl font-bold">
-              {tickets.filter((ticket) => ticket.status === "in_progress").length}
+              {tickets.filter((ticket) => ticket.status === "In Progress").length}
             </div>
           </div>
 
@@ -50,14 +50,14 @@ export default function UserDashboard() {
             <div className="pb-2">
               <h3 className="text-sm font-medium">Closed</h3>
               <p className="text-xs text-gray-500">
-                {tickets.filter((ticket) => ticket.status === "closed").length} tickets
+                {tickets.filter((ticket) => ticket.status === "Closed").length} tickets
               </p>
             </div>
-            <div className="text-2xl font-bold">{tickets.filter((ticket) => ticket.status === "closed").length}</div>
+            <div className="text-2xl font-bold">{tickets.filter((ticket) => ticket.status === "Closed").length}</div>
           </div>
         </div>
 
-        <TicketList tickets={tickets} isAdmin={false} onStatusChange={() => {}} />
+        <TicketList tickets={tickets} isAdmin={false}  />
       </div>
     </DashboardLayout>
   )

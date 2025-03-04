@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const Status = {
-    OPEN: 'open',
-    IN_PROGRESS: 'in_progress',
-    CLOSED: 'closed',
+    OPEN: 'Open',
+    IN_PROGRESS: 'In Progress',
+    CLOSED: 'Closed',
 };
 const ticketSchema=mongoose.Schema({
     title:{
