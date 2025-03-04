@@ -30,7 +30,7 @@ export function TicketList({ tickets, isAdmin }: TicketListProps) {
 
   const onStatusChange=async (ticketId: string, status: string)=>{
     try{
-      const res=await fetch(`${BASE_URL}/api/ticket/${ticketId}`,{
+      const res=await fetch(`${BASE_URL}/api/tickets/${ticketId}`,{
         method:"PATCH",
         credentials:"include",
         headers:{

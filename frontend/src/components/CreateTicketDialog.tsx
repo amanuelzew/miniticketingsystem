@@ -26,7 +26,7 @@ export function CreateTicketDialog({ user}: CreateTicketDialogProps) {
   
     // Create new ticket
     try{
-      const res=await fetch(`${BASE_URL}/api/ticket`,{
+      const res=await fetch(`${BASE_URL}/api/tickets`,{
         method:"POST",
         credentials:"include",
         headers:{

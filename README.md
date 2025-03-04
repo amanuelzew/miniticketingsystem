@@ -1,14 +1,14 @@
 # Mini Ticketing System
 
-This is a simple ticketing system. It allows users to create, view, and manage tickets for various issues or requests.
+This is a simple  Role-Based ticketing system. It allows users to create, view, and manage tickets for various issues or requests.
 
 ## Features
 
--   user managment(signup,login)
--   profile managment
+-   user Authentication using JWT
 -   Create new tickets with a title, description, and status.
 -   Filter tickets based on various criteria by status.
 -   Update existing tickets Status.(ADMIN)
+-   profile managment
 
 ## Tech Stack
 
@@ -16,6 +16,8 @@ This is a simple ticketing system. It allows users to create, view, and manage t
 - [Express](https://expressjs.com/) for server-side logic
 - [MongoDB](https://www.mongodb.com/) for database
 - [React](https://reactjs.org/) for front-end
+- [redux](https://redux.js.org/) for state management
+- [react-router](https://reactrouter.com/) for Navigation 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/) for styling
 
