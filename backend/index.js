@@ -15,7 +15,7 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-    origin: allowedOrigins, 
+    origin:  ['http://localhost:5173', 'https://miniticketingsystem-4imn.vercel.app'],
     methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials:true,
