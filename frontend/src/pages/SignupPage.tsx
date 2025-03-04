@@ -3,12 +3,12 @@
 import type React from "react"
 
 import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router"
-import { BASE_URL } from "../utils/constants"
-import { RootState } from "../store"
 import { useDispatch, useSelector } from "react-redux"
-import { signup } from "../slices/userSlice"
+import { Link, useNavigate } from "react-router"
 import { setTickets } from "../slices/ticketSlice"
+import { signup } from "../slices/userSlice"
+import { RootState } from "../store"
+import { BASE_URL } from "../utils/constants"
 
 export default function SignupPage() {
   const navigate = useNavigate()

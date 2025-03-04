@@ -1,19 +1,18 @@
 "use client"
 
 import type React from "react"
-import { useState,useEffect } from "react"
-import { Link, useNavigate } from "react-router"
-import { BASE_URL } from "../utils/constants"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { store, RootState } from "../store"
+import { Link, useNavigate } from "react-router"
+import { setTickets } from "../slices/ticketSlice"
 import { login } from "../slices/userSlice"
-import { selectTickets, setTickets } from "../slices/ticketSlice"
+import { RootState } from "../store"
+import { BASE_URL } from "../utils/constants"
 
 
 export default function LoginPage() {
   const navigate = useNavigate()
   const user = useSelector((state: RootState) => state.user.user);
-  const allTickets = useSelector((state: RootState) => selectTickets(state));
   const dispatch = useDispatch();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

@@ -1,9 +1,9 @@
+import { useSelector } from "react-redux"
+import { CreateTicketDialog } from "../components/CreateTicketDialog"
 import { DashboardLayout } from "../components/DashboardLayout"
 import { TicketList } from "../components/TicketList"
-import { CreateTicketDialog } from "../components/CreateTicketDialog"
-import { RootState } from "../store"
-import { useSelector } from "react-redux"
 import { selectTickets } from "../slices/ticketSlice"
+import { RootState } from "../store"
 
 export default function UserDashboard() {
   const user = useSelector((state: RootState) => state.user.user);

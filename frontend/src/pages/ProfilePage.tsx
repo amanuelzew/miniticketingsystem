@@ -3,12 +3,12 @@
 import type React from "react"
 
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 import { DashboardLayout } from "../components/DashboardLayout"
-import { RootState } from "../store"
-import { useDispatch, useSelector } from "react-redux"
-import { BASE_URL } from "../utils/constants"
 import { setUser } from "../slices/userSlice"
+import { RootState } from "../store"
+import { BASE_URL } from "../utils/constants"
 
 export default function ProfilePage() {
   const navigate = useNavigate()

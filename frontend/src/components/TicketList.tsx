@@ -1,7 +1,7 @@
 import { useState } from "react"
-import {  Ticket, updateTicketStatus } from "../slices/ticketSlice"
-import { BASE_URL } from "../utils/constants"
 import { useDispatch } from "react-redux"
+import { Ticket, updateTicketStatus } from "../slices/ticketSlice"
+import { BASE_URL } from "../utils/constants"
 
 
 interface TicketListProps {

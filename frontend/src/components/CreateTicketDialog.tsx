@@ -1,11 +1,11 @@
 import type React from "react"
 
-import { BASE_URL } from "../utils/constants"
-import { addTicket, setTickets } from "../slices/ticketSlice"
+import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router"
+import { addTicket, setTickets } from "../slices/ticketSlice"
 import { User } from "../slices/userSlice"
-import { useState } from "react"
+import { BASE_URL } from "../utils/constants"
 
 
 interface CreateTicketDialogProps {

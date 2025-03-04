@@ -1,13 +1,13 @@
 
-import { Link, useLocation, useNavigate } from "react-router"
-import { BASE_URL } from "../utils/constants"
-import { useDispatch } from "react-redux"
-import { useState } from "react"
-import { logout } from "../slices/userSlice";
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
 import CloseIcon from '@mui/icons-material/Close';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router";
+import { logout } from "../slices/userSlice";
+import { BASE_URL } from "../utils/constants";
 
 interface User {
   _id: string;

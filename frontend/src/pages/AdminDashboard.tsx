@@ -1,11 +1,8 @@
-"use client"
-
-
+import { useSelector } from "react-redux"
 import { DashboardLayout } from "../components/DashboardLayout"
 import { TicketList } from "../components/TicketList"
-import { RootState } from "../store"
-import { useSelector } from "react-redux"
 import { selectTickets } from "../slices/ticketSlice"
+import { RootState } from "../store"
 
 export default function AdminDashboard() {
  
