@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
       {
-        "src": "backend/index.js",
+        "src": "*.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
          "src": "/(.*)",
-         "dest": "backend/index.js",
+         "dest": "/",
          "methods": ["GET","POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
           "headers": {
              "Access-Control-Allow-Origin":  "https://miniticketingsystem-4imn.vercel.app",
