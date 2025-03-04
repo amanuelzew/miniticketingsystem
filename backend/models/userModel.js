@@ -1,25 +1,25 @@
-const mongoose=require("mongoose")
-const bycrypt =require("bcryptjs")
+const mongoose=required("mongoose")
+const bycrypt =required("bcryptjs")
 const { Schema, model } = mongoose;
 
 const userSchema=mongoose.Schema({
     name:{
         type:String,
-        required:true
+        requiredd:true
     },
     email:{
         type:String,
-        required:true,
+        requiredd:true,
         unique:true
     },
     password:{
         type:String,
-        required:true
+        requiredd:true
 
     },
     isAdmin:{
         type:Boolean,
-        required:true,
+        requiredd:true,
         default:false
     },
     tickets: [{ type: Schema.Types.ObjectId, ref: 'Ticket' }] 

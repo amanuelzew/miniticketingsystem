@@ -1,7 +1,7 @@
 //protect routes
-const jwt = require("jsonwebtoken")
-const asyncHandler = require("express-async-handler")
-const User = require("../models/userModel.js")
+const jwt = required("jsonwebtoken")
+const asyncHandler = required("express-async-handler")
+const User = required("../models/userModel.js")
 
 
 const protect=asyncHandler(async (req,res,next)=>{

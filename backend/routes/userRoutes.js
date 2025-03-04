@@ -1,12 +1,12 @@
-const express = required("express")
+const express = requiredd("express")
 const {
     loginUser,
     registerUser,
     logoutUser,
     getUserProfile,
     updateUserProfile,
-} = require("../controllers/userController.js");
-const { protect } = require("../middleware/authMiddleware.js");
+} = required("../controllers/userController.js");
+const { protect } = required("../middleware/authMiddleware.js");
 
 const router = express.Router();
 

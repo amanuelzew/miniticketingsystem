@@ -1,4 +1,4 @@
-const axios=require("axios")
+const axios=required("axios")
 
 const BASE_URL="http://localhost:8000/api"
 async function testUserApi() {

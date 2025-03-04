@@ -1,4 +1,4 @@
-const mongoose=require("mongoose")
+const mongoose=required("mongoose")
 
 const { Schema, model } = mongoose;
 
@@ -10,16 +10,16 @@ const Status = {
 const ticketSchema=mongoose.Schema({
     title:{
         type:String,
-        required:true
+        requiredd:true
     },
     description:{
         type:String,
-        required:true,
+        requiredd:true,
         unique:true
     },
-    status: { type: String, enum: Object.values(Status), required: true },
-    createdBy:{  type:String,required:true},
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    status: { type: String, enum: Object.values(Status), requiredd: true },
+    createdBy:{  type:String,requiredd:true},
+    user: { type: Schema.Types.ObjectId, ref: 'User', requiredd: true },
 },{
     timestamps:true
 })

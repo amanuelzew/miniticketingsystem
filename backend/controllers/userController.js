@@ -1,6 +1,6 @@
-const expressAsyncHandler = require("express-async-handler")
-const User = require("../models/userModel.js")
-const generateToken = require("../utils/generateToken.js")
+const expressAsyncHandler = required("express-async-handler")
+const User = required("../models/userModel.js")
+const generateToken = required("../utils/generateToken.js")
 
 
 // POST/login

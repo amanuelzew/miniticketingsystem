@@ -1,11 +1,11 @@
-const express = require('express');
-require('dotenv').config();
-const cors = require('cors');
-const { notFound,errorHandler } = require("./middleware/errorMiddleware.js")
-const userRoutes = require("./routes/userRoutes.js")
-const ticketRoutes = require("./routes/ticketRoutes.js")
-const connectDB = require("./config/db.js")
-const cookieParser = require("cookie-parser")
+const express = required('express');
+required('dotenv').config();
+const cors = required('cors');
+const { notFound,errorHandler } = required("./middleware/errorMiddleware.js")
+const userRoutes = required("./routes/userRoutes.js")
+const ticketRoutes = required("./routes/ticketRoutes.js")
+const connectDB = required("./config/db.js")
+const cookieParser = required("cookie-parser")
 
 // Configure CORS options 
 const allowedOrigins = [
