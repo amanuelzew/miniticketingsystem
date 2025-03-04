@@ -8,10 +8,14 @@ import ticketRoutes from "./routes/ticketRoutes.js"
 import connectDB from "./config/db.js"
 import cookieParser from "cookie-parser"
 
-
+// Configure CORS options 
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://miniticketingsystem-4imn.vercel.app', 
+];
 
 const corsOptions = {
-    origin: "https://miniticketingsystem-4imn.vercel.app", 
+    origin: allowedOrigins, 
     methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials:true,
@@ -34,11 +38,10 @@ app.use(cookieParser())
 app.use("/api/",userRoutes)
 app.use("/api/",ticketRoutes)
 
-app.get("/",(req,res)=>res.send("server is up and running"))
+app.get("/",(req,res)=>res.send("server is u and running"))
 
 app.use(notFound)
 app.use(errorHandler)
 
 app.listen(PORT,()=>console.log(`Server running on port ${PORT}`))
 
-module.exports = app;
