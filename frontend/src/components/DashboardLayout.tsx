@@ -62,19 +62,6 @@ export function DashboardLayout({ children, user }: DashboardLayoutProps) {
 
   return (
     <div className="bg-gray-50">
-      <div className="fixed top-0 left-0">
-        <button
-          className="m-2 p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? (
-            <CloseIcon />
-          ) : (
-            <MenuIcon />
-          )}
-        </button>
-      </div>
-
 
       {/* Sidebar */}
       <div className="relative">
