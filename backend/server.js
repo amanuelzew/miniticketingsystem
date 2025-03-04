@@ -11,7 +11,7 @@ import cookieParser from "cookie-parser"
 // Configure CORS options 
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://miniticketingsystem.vercel.app', 
+    'https://miniticketingsystem-4imn.vercel.app/', 
 ];
 
 const corsOptions = {
