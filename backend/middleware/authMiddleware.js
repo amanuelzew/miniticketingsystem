@@ -1,7 +1,7 @@
 //protect routes
-const jwt = required("jsonwebtoken")
-const asyncHandler = required("express-async-handler")
-const User = required("../models/userModel.js")
+const jwt = require("jsonwebtoken")
+const asyncHandler = require("express-async-handler")
+const User = require("../models/userModel.js")
 
 
 const protect=asyncHandler(async (req,res,next)=>{
@@ -33,5 +33,6 @@ const admin=(req,res,next)=>{
         throw new Error("Not authorized as an admin")
     }
 }
-
-export {protect,admin}
+module.exports = {
+    protect,admin
+};

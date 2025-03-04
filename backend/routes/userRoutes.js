@@ -1,12 +1,12 @@
-const express = requiredd("express")
+const express = require("express")
 const {
     loginUser,
     registerUser,
     logoutUser,
     getUserProfile,
     updateUserProfile,
-} = required("../controllers/userController.js");
-const { protect } = required("../middleware/authMiddleware.js");
+} = require("../controllers/userController.js");
+const { protect } = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
 
@@ -17,4 +17,4 @@ router.post("/logout", logoutUser)
 router.get("/profile", protect, getUserProfile)
 router.patch("/profile", protect, updateUserProfile)
 
-export default router
+module.exports=  router

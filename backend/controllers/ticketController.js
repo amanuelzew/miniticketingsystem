@@ -1,6 +1,6 @@
-const expressAsyncHandler = required("express-async-handler")
-const { TicketModel, Status } = required("../models/ticketModel.js")
-const UserModel = required("../models/userModel.js")
+const expressAsyncHandler = require("express-async-handler")
+const { TicketModel, Status } = require("../models/ticketModel.js")
+const UserModel = require("../models/userModel.js")
 
 
 //POST /tickets → Create a support ticket (title, description, status).
@@ -72,4 +72,4 @@ const editTicketStatus = async (req, res) => {
     }
 };
 
-export {getTickets,getUserTickets,createTicket,editTicketStatus};
+module.exports= {getTickets,getUserTickets,createTicket,editTicketStatus};

@@ -1,25 +1,25 @@
-const mongoose=required("mongoose")
-const bycrypt =required("bcryptjs")
+const mongoose=require("mongoose")
+const bycrypt =require("bcryptjs")
 const { Schema, model } = mongoose;
 
 const userSchema=mongoose.Schema({
     name:{
         type:String,
-        requiredd:true
+        require:true
     },
     email:{
         type:String,
-        requiredd:true,
+        require:true,
         unique:true
     },
     password:{
         type:String,
-        requiredd:true
+        require:true
 
     },
     isAdmin:{
         type:Boolean,
-        requiredd:true,
+        require:true,
         default:false
     },
     tickets: [{ type: Schema.Types.ObjectId, ref: 'Ticket' }] 
@@ -43,4 +43,4 @@ userSchema.methods.matchPassword=async function(enteredPassword){
 
 const User=mongoose.model("User",userSchema)
 
-export default User;
+module.exports=  User;

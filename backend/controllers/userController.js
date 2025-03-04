@@ -1,6 +1,6 @@
-const expressAsyncHandler = required("express-async-handler")
-const User = required("../models/userModel.js")
-const generateToken = required("../utils/generateToken.js")
+const expressAsyncHandler = require("express-async-handler")
+const User = require("../models/userModel.js")
+const generateToken = require("../utils/generateToken.js")
 
 
 // POST/login
@@ -74,4 +74,5 @@ const updateUserProfile=expressAsyncHandler (async(req,res)=>{
       throw new Error("User not found")
    }
 })
-export {loginUser,registerUser,logoutUser,getUserProfile,updateUserProfile}
+
+module.exports= {loginUser,registerUser,logoutUser,getUserProfile,updateUserProfile}

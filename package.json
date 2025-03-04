@@ -4,8 +4,8 @@
   "description": "Get started by customizing your environment (defined in the .idx/dev.nix file) with the tools and IDE extensions you'll need for your project!",
   "main": "index.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon node backend/server.js",
+    "start": "node backend/index.js",
+    "server": "nodemon node backend/index.js",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm  run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"

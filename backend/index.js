@@ -1,12 +1,12 @@
-const express = required('express');
-const dotenv=required('dotenv')
+const express = require('express');
+const dotenv=require('dotenv')
 dotenv.config();
-const cors = required('cors');
-const { notFound,errorHandler } = required("./middleware/errorMiddleware.js")
-const userRoutes = required("./routes/userRoutes.js")
-const ticketRoutes = required("./routes/ticketRoutes.js")
-const connectDB = required("./config/db.js")
-const cookieParser = required("cookie-parser")
+const cors = require('cors');
+const { notFound,errorHandler } = require("./middleware/errorMiddleware.js")
+const userRoutes = require("./routes/userRoutes.js")
+const ticketRoutes = require("./routes/ticketRoutes.js")
+const connectDB = require("./config/db.js")
+const cookieParser = require("cookie-parser")
 
 // Configure CORS options 
 const allowedOrigins = [
@@ -45,3 +45,4 @@ app.use(errorHandler)
 
 app.listen(PORT,()=>console.log(`Server running on port ${PORT}`))
 
+module.exports = app;

@@ -1,4 +1,4 @@
-const mongoose=required("mongoose")
+const mongoose=require("mongoose")
 
 const { Schema, model } = mongoose;
 
@@ -10,16 +10,16 @@ const Status = {
 const ticketSchema=mongoose.Schema({
     title:{
         type:String,
-        requiredd:true
+        require:true
     },
     description:{
         type:String,
-        requiredd:true,
+        require:true,
         unique:true
     },
-    status: { type: String, enum: Object.values(Status), requiredd: true },
-    createdBy:{  type:String,requiredd:true},
-    user: { type: Schema.Types.ObjectId, ref: 'User', requiredd: true },
+    status: { type: String, enum: Object.values(Status), require: true },
+    createdBy:{  type:String,require:true},
+    user: { type: Schema.Types.ObjectId, ref: 'User', require: true },
 },{
     timestamps:true
 })
@@ -29,4 +29,4 @@ const ticketSchema=mongoose.Schema({
 
 const TicketModel=mongoose.model("Ticket",ticketSchema)
 
-export  {TicketModel,Status};
+module.exports=  {TicketModel,Status};

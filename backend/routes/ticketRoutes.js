@@ -1,6 +1,6 @@
-const express = required("express")
-const { getTickets, getUserTickets, createTicket, editTicketStatus} = required("../controllers/ticketController.js")
-const {protect,admin} = required("../middleware/authMiddleware.js")
+const express = require("express")
+const { getTickets, getUserTickets, createTicket, editTicketStatus} = require("../controllers/ticketController.js")
+const {protect,admin} = require("../middleware/authMiddleware.js")
 
 
 const router=express.Router()
@@ -11,4 +11,4 @@ router.patch("/tickets/:id",protect,admin,editTicketStatus)
 router.get("/usertickets",protect,getUserTickets)
 
 
-export default router
+module.exports= router
