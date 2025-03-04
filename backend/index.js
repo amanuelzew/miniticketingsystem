@@ -1,5 +1,6 @@
 const express = required('express');
-required('dotenv').config();
+const dotenv=required('dotenv')
+dotenv.config();
 const cors = required('cors');
 const { notFound,errorHandler } = required("./middleware/errorMiddleware.js")
 const userRoutes = required("./routes/userRoutes.js")
