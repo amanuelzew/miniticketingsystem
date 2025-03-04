@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import bycrypt from "bcryptjs"
+const mongoose=require("mongoose")
+const bycrypt =require("bcryptjs")
 const { Schema, model } = mongoose;
 
 const userSchema=mongoose.Schema({

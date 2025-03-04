@@ -1,7 +1,7 @@
 {
   "name": "miniticketingsystem",
   "version": "1.0.0",
-  "type": "module",
+  "type": "commonjs",
   "description": "Get started by customizing your environment (defined in the .idx/dev.nix file) with the tools and IDE extensions you'll need for your project!",
   "main": "index.js",
   "scripts": {

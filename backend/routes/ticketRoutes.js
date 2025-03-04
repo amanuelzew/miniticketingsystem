@@ -1,6 +1,7 @@
-import express from "express"
-import { getTickets, getUserTickets, createTicket, editTicketStatus} from "../controllers/ticketController.js"
-import {protect,admin} from "../middleware/authMiddleware.js"
+const express = require("express")
+const { getTickets, getUserTickets, createTicket, editTicketStatus} = require("../controllers/ticketController.js")
+const {protect,admin} = require("../middleware/authMiddleware.js")
+
 
 const router=express.Router()
 

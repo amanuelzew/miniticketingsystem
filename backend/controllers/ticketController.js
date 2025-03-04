@@ -1,6 +1,7 @@
-import expressAsyncHandler from "express-async-handler"
-import { TicketModel, Status } from "../models/ticketModel.js"
-import UserModel from "../models/userModel.js"
+const expressAsyncHandler = require("express-async-handler")
+const { TicketModel, Status } = require("../models/ticketModel.js")
+const UserModel = require("../models/userModel.js")
+
 
 //POST /tickets → Create a support ticket (title, description, status).
 //GET /tickets:

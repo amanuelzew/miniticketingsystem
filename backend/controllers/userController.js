@@ -1,6 +1,7 @@
-import expressAsyncHandler from "express-async-handler"
-import User from "../models/userModel.js"
-import generateToken from "../utils/generateToken.js"
+const expressAsyncHandler = require("express-async-handler")
+const User = require("../models/userModel.js")
+const generateToken = require("../utils/generateToken.js")
+
 
 // POST/login
 //public
