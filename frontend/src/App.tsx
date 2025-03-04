@@ -8,7 +8,6 @@ import UserDashboard from "./pages/UserDashBoard"
 import AdminDashboard from "./pages/AdminDashboard"
 import ProfilePage from "./pages/ProfilePage"
 import { PrivateRoute } from "./components/PrivateRoute"
-import { AdminRoute } from "./components/AdminRoute"
 
 function App() {
   return (
