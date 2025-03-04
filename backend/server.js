@@ -9,8 +9,13 @@ import connectDB from "./config/db.js"
 import cookieParser from "cookie-parser"
 
 // Configure CORS options 
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://miniticketingsystem-4imn.vercel.app/login'
+];
+
 const corsOptions = {
-    origin: 'http://localhost:5173', 
+    origin: allowedOrigins, 
     methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials:true,
